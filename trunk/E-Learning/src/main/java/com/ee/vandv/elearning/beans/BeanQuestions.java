@@ -6,6 +6,7 @@ package com.ee.vandv.elearning.beans;
 
 import com.ee.vandv.elearning.base.BeanBase;
 import com.ee.vandv.elearning.base.ServicioBase;
+import com.ee.vandv.elearning.modelo.Categoria;
 import com.ee.vandv.elearning.modelo.Pregunta;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,38 +22,38 @@ import javax.inject.Inject;
 @ManagedBean
 @ViewScoped
 public class BeanQuestions extends BeanBase{
-    private List<Pregunta> listaPreguntas;
+    private List<Categoria> listaCategorias;
     
     @Inject
     ServicioBase servicio;
 
     public BeanQuestions() {
         this.inicializar();
-    }    
+    }
     
     @Override
     public void inicializar() {
-        listaPreguntas = new ArrayList<Pregunta>();
+        listaCategorias = new ArrayList<Categoria>();
     }
 
     @Override
     @PostConstruct
     public void inicializarPost() {
-        listaPreguntas = servicio.seleccionar(Pregunta.class);
+        listaCategorias = servicio.seleccionar(Categoria.class);
     }
 
     /**
-     * @return the listaPreguntas
+     * @return the listaCategorias
      */
-    public List<Pregunta> getListaPreguntas() {
-        return listaPreguntas;
+    public List<Categoria> getListaCategorias() {
+        return listaCategorias;
     }
 
     /**
-     * @param listaPreguntas the listaPreguntas to set
+     * @param listaCategorias the listaCategorias to set
      */
-    public void setListaPreguntas(List<Pregunta> listaPreguntas) {
-        this.listaPreguntas = listaPreguntas;
+    public void setListaCategorias(List<Categoria> listaCategorias) {
+        this.listaCategorias = listaCategorias;
     }
     
 }
