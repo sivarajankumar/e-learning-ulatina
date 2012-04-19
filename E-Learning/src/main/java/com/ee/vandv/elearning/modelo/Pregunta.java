@@ -4,6 +4,7 @@
  */
 package com.ee.vandv.elearning.modelo;
 
+import com.ee.vandv.elearning.base.ObjetoBase;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.*;
@@ -23,7 +24,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Pregunta.findAll", query = "SELECT p FROM Pregunta p"),
     @NamedQuery(name = "Pregunta.findByIdpregunta", query = "SELECT p FROM Pregunta p WHERE p.idpregunta = :idpregunta"),
     @NamedQuery(name = "Pregunta.findByPregunta", query = "SELECT p FROM Pregunta p WHERE p.pregunta = :pregunta")})
-public class Pregunta implements Serializable {
+public class Pregunta extends ObjetoBase implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)

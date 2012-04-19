@@ -4,6 +4,7 @@
  */
 package com.ee.vandv.elearning.modelo;
 
+import com.ee.vandv.elearning.base.ObjetoBase;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.*;
@@ -25,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Categoria.findByIdcategoria", query = "SELECT c FROM Categoria c WHERE c.idcategoria = :idcategoria"),
     @NamedQuery(name = "Categoria.findByDescripcion", query = "SELECT c FROM Categoria c WHERE c.descripcion = :descripcion"),
     @NamedQuery(name = "Categoria.findByOrden", query = "SELECT c FROM Categoria c WHERE c.orden = :orden")})
-public class Categoria implements Serializable {
+public class Categoria extends ObjetoBase implements Serializable{
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)

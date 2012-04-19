@@ -4,6 +4,7 @@
  */
 package com.ee.vandv.elearning.modelo;
 
+import com.ee.vandv.elearning.base.ObjetoBase;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.*;
@@ -23,7 +24,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Perfil.findAll", query = "SELECT p FROM Perfil p"),
     @NamedQuery(name = "Perfil.findByIdperfil", query = "SELECT p FROM Perfil p WHERE p.idperfil = :idperfil"),
     @NamedQuery(name = "Perfil.findByNombre", query = "SELECT p FROM Perfil p WHERE p.nombre = :nombre")})
-public class Perfil implements Serializable {
+public class Perfil extends ObjetoBase implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
