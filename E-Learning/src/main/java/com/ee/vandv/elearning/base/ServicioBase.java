@@ -19,7 +19,7 @@ import javax.persistence.Query;
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-public abstract class ServicioBase implements Serializable{
+public class ServicioBase implements Serializable{
     
     @PersistenceContext(unitName="persistence")
     protected EntityManager em;
@@ -41,3 +41,4 @@ public abstract class ServicioBase implements Serializable{
         return (ArrayList<T>) query.getResultList();
     }
 }
+
