@@ -39,7 +39,7 @@ public class Pregunta extends ObjetoBase implements Serializable {
     @JoinColumn(name = "idcategoria", referencedColumnName = "idcategoria")
     @ManyToOne(fetch = FetchType.LAZY)
     private Categoria idcategoria;
-    @OneToMany(mappedBy = "idpregunta", fetch = FetchType.LAZY)
+    @Transient
     private List<Opcion> opcionList;
 
     public Pregunta() {
@@ -80,6 +80,7 @@ public class Pregunta extends ObjetoBase implements Serializable {
 
     @XmlTransient
     public List<Opcion> getOpcionList() {
+        
         return opcionList;
     }
 
