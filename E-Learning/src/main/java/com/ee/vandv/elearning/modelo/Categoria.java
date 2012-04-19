@@ -18,14 +18,12 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author stevenziggiz
  */
 @Entity
-@Table(name = "categoria", catalog = "elearning", schema = "", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"orden"})})
+@Table(name = "categoria", catalog = "elearning", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Categoria.findAll", query = "SELECT c FROM Categoria c"),
     @NamedQuery(name = "Categoria.findByIdcategoria", query = "SELECT c FROM Categoria c WHERE c.idcategoria = :idcategoria"),
-    @NamedQuery(name = "Categoria.findByDescripcion", query = "SELECT c FROM Categoria c WHERE c.descripcion = :descripcion"),
-    @NamedQuery(name = "Categoria.findByOrden", query = "SELECT c FROM Categoria c WHERE c.orden = :orden")})
+    @NamedQuery(name = "Categoria.findByDescripcion", query = "SELECT c FROM Categoria c WHERE c.descripcion = :descripcion")})
 public class Categoria extends ObjetoBase implements Serializable{
     private static final long serialVersionUID = 1L;
     @Id
@@ -37,12 +35,8 @@ public class Categoria extends ObjetoBase implements Serializable{
     @NotNull
     @Size(min = 1, max = 400)
     @Column(name = "descripcion", nullable = false, length = 400)
-    private String descripcion;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "orden", nullable = false)
-    private int orden;
-    @OneToMany(mappedBy = "idcategoria", fetch = FetchType.LAZY)
+    private String descripcion;    
+    @OneToMany(mappedBy = "idcategoria", fetch = FetchType.EAGER)
     private List<Pregunta> preguntaList;
 
     public Categoria() {
@@ -55,7 +49,6 @@ public class Categoria extends ObjetoBase implements Serializable{
     public Categoria(Integer idcategoria, String descripcion, int orden) {
         this.idcategoria = idcategoria;
         this.descripcion = descripcion;
-        this.orden = orden;
     }
 
     public Integer getIdcategoria() {
@@ -72,14 +65,6 @@ public class Categoria extends ObjetoBase implements Serializable{
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
-
-    public int getOrden() {
-        return orden;
-    }
-
-    public void setOrden(int orden) {
-        this.orden = orden;
     }
 
     @XmlTransient
