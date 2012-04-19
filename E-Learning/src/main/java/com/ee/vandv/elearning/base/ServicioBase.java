@@ -40,5 +40,11 @@ public class ServicioBase implements Serializable{
         Query query = em.createQuery("Select p FROM "+clase.getSimpleName()+" as p");
         return (ArrayList<T>) query.getResultList();
     }
+    
+    public <T> ArrayList<T> seleccionarQ(String query_descriptor){
+        Query query = em.createQuery(query_descriptor);
+        return (ArrayList<T>) query.getResultList();
+    }
+    
 }
 

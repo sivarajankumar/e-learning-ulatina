@@ -11,10 +11,20 @@
                 <p:accordionPanel value="#{beanQuestions.listaCategorias}"
                                   var="categoria">
                     <p:tab title="#{categoria.descripcion}">
-                        <p:dataGrid value="#{categoria.preguntaList}"
+                        <p:dataGrid columns="1"
+                                    value="#{categoria.preguntaList}"
                                     var="pregunta">
                             <p:column>
                                 <h:outputText value="#{pregunta.pregunta}"/>
+                                <p:panel>
+                                    <p:dataGrid columns="1"
+                                                value="#{pregunta.opcionList}"
+                                                var="option">
+                                        <p:column>
+                                            <h:outputText value="#{option.descripcion}"/>
+                                        </p:column>
+                                    </p:dataGrid>
+                                </p:panel>
                             </p:column>
                         </p:dataGrid>
                     </p:tab>
