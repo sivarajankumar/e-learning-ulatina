@@ -4,6 +4,7 @@
  */
 package com.ee.vandv.elearning.modelo;
 
+import com.ee.vandv.elearning.base.ObjetoBase;
 import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -23,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Persona.findByNombre", query = "SELECT p FROM Persona p WHERE p.nombre = :nombre"),
     @NamedQuery(name = "Persona.findByApellido1", query = "SELECT p FROM Persona p WHERE p.apellido1 = :apellido1"),
     @NamedQuery(name = "Persona.findByApellido2", query = "SELECT p FROM Persona p WHERE p.apellido2 = :apellido2")})
-public class Persona implements Serializable {
+public class Persona extends ObjetoBase implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
