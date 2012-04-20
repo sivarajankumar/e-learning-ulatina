@@ -10,7 +10,21 @@
     <ui:define name="content">
         <f:view>
             <h:form id="login_form">
-                <p:commandButton value="Login" action="#{beanQuestions.irBienvenida}" ajax="false" update="content"/>
+                <p:messages id="messages"  autoUpdate="true"/>  
+                <h:panelGrid columns="2" id="contenedor">
+                    <img src="resources/pics/logo.jpg" alt="Banner" width="368"/>
+                    <p:panel header="" style="width: 270px; margin-left:200px;">  
+                        <h:panelGrid columns="1" id="matchGrid">                     
+                            <h:outputLabel value="Usuario" />  
+                            <p:inputText id ="pwd1" value="#{beanQuestions.usuarioLogueado.usuario}" 
+                                         label="Usuario" required="true"/>  
+                            <h:outputLabel value="Contrasena" />  
+                            <p:password  id="pwd2"  feedback="false" value="#{beanQuestions.usuarioLogueado.clave}" 
+                                         label="Contrasena" required="true"/>  
+                        </h:panelGrid>  
+                        <p:commandButton value="Login" action="#{beanQuestions.irBienvenida}" ajax="false"/>
+                    </p:panel>                
+                </h:panelGrid>  
             </h:form>
         </f:view>
     </ui:define>
