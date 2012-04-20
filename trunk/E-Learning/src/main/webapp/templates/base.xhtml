@@ -9,6 +9,7 @@
     <h:head>
         <title>#{titulo}</title>
         <meta http-equiv="Content-type" content="application/xhtml+xml; charset=UTF-8" />
+        <link href="resources/css/basico.css" rel="stylesheet" type="text/css" />
         <script type="text/javascript">
             if (window.history) {
                 function noBack(){
@@ -39,10 +40,17 @@
             </script>
         </ui:insert>
     </h:head>
-    <h:body onload="history.forward()" onunload="history.go(1);">
-        <div id="workArea">
-            <ui:insert name="menu"/>
-            <ui:insert name="content"/>
-        </div>
+    <h:body onload="history.forward()" onunload="history.go(1);"
+            style="display: block; width: 981px;">
+        <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>  
+        <center>
+            <div id="encabezado">
+                <img src="resources/pics/baner.jpg" alt="Banner"/>
+            </div>
+            <div id="workArea">
+                <ui:insert name="menu"/>
+                <ui:insert name="content"/>
+            </div>
+        </center>
     </h:body>
 </html>
