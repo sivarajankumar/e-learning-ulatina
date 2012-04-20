@@ -47,7 +47,7 @@ public class Pregunta extends ObjetoBase implements Serializable {
     @Transient
     private List<SelectItem> listaSelectItems;
     @Transient
-    private int indexOpcionSeleccionada;
+    private int indexOpcionSeleccionada = -1;
 
     public Pregunta() {
     }
@@ -73,7 +73,6 @@ public class Pregunta extends ObjetoBase implements Serializable {
             selectItem = new SelectItem(opcionList.indexOf(opcion), opcion.getDescripcion());
             listaSelectItems.add(selectItem);
         }
-        indexOpcionSeleccionada = 0;
     }
 
     public Integer getIdpregunta() {

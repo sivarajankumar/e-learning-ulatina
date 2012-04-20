@@ -21,11 +21,18 @@
         </f:view>
     </ui:define>
     <ui:define name="content">
-        <f:view>
-            <ui:include src="popup/nueva_evaluacion.xhtml" />
+        <f:view>            
             <h:form id="formulacion_evaluaciones_form">
                 <p:panel id="tabla">                    
-                    <p:dataTable id="evaluaciones" var="evaluacion" value="#{beanQuestions.listaEvaluaciones}" selection="#{beanQuestions.evaluacionSeleccionada}" selectionMode="single">
+                    <p:dataTable id="evaluaciones"
+                                 var="evaluacion"
+                                 paginator="true"
+                                 rows="10"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                                 value="#{beanQuestions.listaEvaluaciones}"
+                                 selection="#{beanQuestions.evaluacionSeleccionada}"
+                                 selectionMode="single"
+                                 rowKey="#{evaluacion.idevaluacion}">
                         <f:facet name="header">
                             Listado de Evaluaciones
                         </f:facet>
@@ -39,19 +46,23 @@
                             #{evaluacion.estado}
                         </p:column>
                         <f:facet name="footer">
-                            <p:commandButton value="Nuevo" update=":formulacion_evaluaciones_form:display" oncomplete="evalDialog.show()" style="margin: 10px 0 10px 0" icon="ui-icon-document"/>
+                            <p:commandButton value="Nuevo"
+                                             actionListener="#{beanQuestions.accionBotonCrearNuevaEvaluacionNuevo}"
+                                             update=":formulacion_evaluaciones_form:display"
+                                             oncomplete="evalDialog.show()"
+                                             style="margin: 10px 0 10px 0"
+                                             icon="ui-icon-document"/>
                             <p:commandButton id="viewButton" value="Mostrar" icon="ui-icon-search"/>                            
                         </f:facet>
                     </p:dataTable>
                 </p:panel>
                 <p:dialog id="dialog" header="Nueva Evaluación" widgetVar="evalDialog" resizable="false"  
-                          width="290" showEffect="clip" hideEffect="fold">  
+                          width="280" showEffect="clip" hideEffect="fold">  
 
                     <h:panelGrid id="display" columns="1" cellpadding="4">
-                        <h:outputText value="Descripción del Sitio a Evaluar" />
+                        <h:outputText value="Descripción Sitio a Evaluar" />
                         <p:inputTextarea value="#{beanQuestions.evaluacionNueva.descripcionSitio}"/>
-
-                        <p:commandButton value="Aceptar" actionListener="#{beanQuestions.accionBotonCrearNuevaEvaluacionAceptar}" ajax="false"/>
+                        <p:commandButton value="Aceptar" action="#{beanQuestions.accionBotonCrearNuevaEvaluacionAceptar}" update=":formulacion_evaluaciones_form:tabla" ajax="false"/>
                     </h:panelGrid>  
                 </p:dialog>                
             </h:form>

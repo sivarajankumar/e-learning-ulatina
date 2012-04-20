@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
  * @author stevenziggiz
  */
 @Embeddable
-public class OpcionUsuarioPK implements Serializable {
+public class EvaluacionOpcionPK implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "IDOPCION", nullable = false)
@@ -23,15 +23,15 @@ public class OpcionUsuarioPK implements Serializable {
     
     @Basic(optional = false)
     @NotNull
-    @Column(name = "IDUSUARIO", nullable = false)
-    private Integer idusuario;
+    @Column(name = "IDEVALUACION", nullable = false)
+    private Integer idevaluacion;
 
-    public OpcionUsuarioPK() {
+    public EvaluacionOpcionPK() {
     }
 
-    public OpcionUsuarioPK(Integer idopcion, Integer idusuario) {
+    public EvaluacionOpcionPK(Integer idopcion, Integer idevaluacion) {
         this.idopcion = idopcion;
-        this.idusuario = idusuario;
+        this.idevaluacion = idevaluacion;
     }
     
     /**
@@ -48,31 +48,18 @@ public class OpcionUsuarioPK implements Serializable {
         this.idopcion = idopcion;
     }
 
-    /**
-     * @return the idusuario
-     */
-    public Integer getIdusuario() {
-        return idusuario;
-    }
-
-    /**
-     * @param idusuario the idusuario to set
-     */
-    public void setIdusuario(Integer idusuario) {
-        this.idusuario = idusuario;
-    }
-    
+        
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof OpcionUsuarioPK)) {
+        if (!(object instanceof EvaluacionOpcionPK)) {
             return false;
         }
-        OpcionUsuarioPK other = (OpcionUsuarioPK) object;
+        EvaluacionOpcionPK other = (EvaluacionOpcionPK) object;
         if ((this.idopcion == null && other.idopcion != null) || (this.idopcion != null && !this.idopcion.equals(other.idopcion))) {
             return false;
         }
-        if ((this.idusuario == null && other.idusuario != null) || (this.idusuario != null && !this.idusuario.equals(other.idusuario))) {
+        if ((this.idevaluacion == null && other.idevaluacion != null) || (this.idevaluacion != null && !this.idevaluacion.equals(other.idevaluacion))) {
             return false;
         }
         return true;
@@ -82,7 +69,21 @@ public class OpcionUsuarioPK implements Serializable {
     public int hashCode() {
         int hash = 3;
         hash = 97 * hash + (this.idopcion != null ? this.idopcion.hashCode() : 0);
-        hash = 97 * hash + (this.idusuario != null ? this.idusuario.hashCode() : 0);
+        hash = 97 * hash + (this.idevaluacion != null ? this.idevaluacion.hashCode() : 0);
         return hash;
+    }
+
+    /**
+     * @return the idevaluacion
+     */
+    public Integer getIdevaluacion() {
+        return idevaluacion;
+    }
+
+    /**
+     * @param idevaluacion the idevaluacion to set
+     */
+    public void setIdevaluacion(Integer idevaluacion) {
+        this.idevaluacion = idevaluacion;
     }
 }

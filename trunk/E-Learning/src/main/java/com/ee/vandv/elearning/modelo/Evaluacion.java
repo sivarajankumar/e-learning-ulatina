@@ -6,6 +6,8 @@ package com.ee.vandv.elearning.modelo;
 
 import com.ee.vandv.elearning.base.ObjetoBase;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -26,10 +28,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Evaluacion extends ObjetoBase implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "idevaluacion", nullable = false)
+    @Column(name = "idevaluacion")
     private Integer idevaluacion;
     @Basic(optional = false)
     @NotNull
@@ -42,6 +43,9 @@ public class Evaluacion extends ObjetoBase implements Serializable {
     private boolean indicadorTerminada;
     @Transient
     private String estado;
+    @JoinColumn(name="IDUSUARIO", referencedColumnName="IDUSUARIO",nullable=false)
+    @ManyToOne(optional=false,fetch= FetchType.EAGER)
+    private Usuario usuario;
 
     public Evaluacion() {
     }
@@ -109,19 +113,33 @@ public class Evaluacion extends ObjetoBase implements Serializable {
      * @return the estado
      */
     public String getEstado() {
+        if(indicadorTerminada){
+            estado = "Terminada";
+        }else{
+            estado = "Pendiente";
+        }
         return estado;
     }
 
     /**
      * @param estado the estado to set
      */
-    public void setEstado(String estado) {
-        if(indicadorTerminada){
-            estado = "Terminada";
-        }else{
-            estado = "Pendiente";
-        }
+    public void setEstado(String estado) {        
         this.estado = estado;
+    }
+
+    /**
+     * @return the usuario
+     */
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    /**
+     * @param usuario the usuario to set
+     */
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
     
 }

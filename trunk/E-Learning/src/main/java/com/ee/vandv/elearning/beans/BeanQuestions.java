@@ -8,13 +8,15 @@ import com.ee.vandv.elearning.base.BeanBase;
 import com.ee.vandv.elearning.base.ServicioBase;
 import com.ee.vandv.elearning.modelo.Categoria;
 import com.ee.vandv.elearning.modelo.Evaluacion;
-import com.ee.vandv.elearning.modelo.OpcionUsuario;
+import com.ee.vandv.elearning.modelo.EvaluacionOpcion;
 import com.ee.vandv.elearning.modelo.Pregunta;
 import com.ee.vandv.elearning.modelo.Usuario;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -25,7 +27,7 @@ import javax.inject.Inject;
  * @author stevenziggiz
  */
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class BeanQuestions extends BeanBase {
 
     private List<Evaluacion> listaEvaluaciones;
@@ -62,6 +64,10 @@ public class BeanQuestions extends BeanBase {
         }
         return null;
     }
+    
+    private void cargarCategorias(){
+        listaCategorias = servicio.seleccionar(Categoria.class);
+    }
 
     private void cargarRespuestas() {
         for (Categoria categoria : listaCategorias) {
@@ -71,27 +77,29 @@ public class BeanQuestions extends BeanBase {
         }
     }
 
-    private void botonFormularioAceptar() {
-        OpcionUsuario opcionUsuario;
-        List<OpcionUsuario> listaRespuestasUsuario = new ArrayList<OpcionUsuario>();
+    private String botonFormularioAceptar() {
+        EvaluacionOpcion evaluacionOpcion;
+        List<EvaluacionOpcion> listaRespuestasEvaluacion = new ArrayList<EvaluacionOpcion>();
         for (Categoria categoria : listaCategorias) {
             for (Pregunta pregunta : categoria.getPreguntaList()) {
-                opcionUsuario = new OpcionUsuario(pregunta.obtenerRespuestaUsuario(), usuarioLogueado);
-                listaRespuestasUsuario.add(opcionUsuario);
+                evaluacionOpcion = new EvaluacionOpcion(pregunta.obtenerRespuestaUsuario(), evaluacionNueva);
+                listaRespuestasEvaluacion.add(evaluacionOpcion);
             }
         }
-        guardarRespuestaUsuario(listaRespuestasUsuario);
+        guardarRespuestaUsuario(listaRespuestasEvaluacion);
+        return irListadoFormulacionEvaluaciones();
     }
 
-    private void guardarRespuestaUsuario(List<OpcionUsuario> listaRespuestasUsuario) {
-        for (OpcionUsuario opcionUsuario : listaRespuestasUsuario) {
-            servicio.guardar(opcionUsuario);
+    private void guardarRespuestaUsuario(List<EvaluacionOpcion> listaRespuestasUsuario) {
+        evaluacionNueva.setIndicadorTerminada(true);
+        servicio.actualizar(evaluacionNueva);
+        for (EvaluacionOpcion EvaluacionOpcion : listaRespuestasUsuario) {
+            servicio.guardar(EvaluacionOpcion);
         }
     }
 
-    public void accionBotonFormularioAceptar(ActionEvent event) {
-        botonFormularioAceptar();
-        FacesContext.getCurrentInstance().renderResponse();
+    public String accionBotonFormularioAceptar() {
+        return botonFormularioAceptar();
     }
     
     /**%%%%%%######%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%######%%%%%%**/
@@ -107,9 +115,12 @@ public class BeanQuestions extends BeanBase {
      * Crear la nueva evaluacion
      * @param event 
      */
-    public void accionBotonCrearNuevaEvaluacionAceptar(ActionEvent event){
+    public String accionBotonCrearNuevaEvaluacionAceptar(){
+        evaluacionNueva.setUsuario(usuarioLogueado);
         servicio.guardar(evaluacionNueva);
-        FacesContext.getCurrentInstance().renderResponse();
+        cargarCategorias();
+        cargarRespuestas();
+        return irResponderPreguntas();
     }
     
     /**%%%%%%######%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%######%%%%%%**/
@@ -201,6 +212,9 @@ public class BeanQuestions extends BeanBase {
      * @return the evaluacionNueva
      */
     public Evaluacion getEvaluacionNueva() {
+        if(evaluacionNueva == null){
+            evaluacionNueva = new Evaluacion();
+        }
         return evaluacionNueva;
     }
 
