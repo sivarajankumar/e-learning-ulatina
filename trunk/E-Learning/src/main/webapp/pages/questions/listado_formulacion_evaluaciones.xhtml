@@ -12,9 +12,9 @@
             <h:form id="menu_form">
                 <p:menubar>  
                     <p:submenu label="Opciones" icon="ui-icon-document">
-                        <p:menuitem value="Evaluar" action="#{beanQuestions.irResponderPreguntas}" ajax="false" icon="ui-icon-pencil"/>  
+                        <p:menuitem value="Evaluar" action="#{beanQuestions.evaluarNav}" ajax="false" icon="ui-icon-pencil" /> 
                         <p:separator />  
-                        <p:menuitem value="Estadisticas" action="#{beanQuestions.irEstadisticas}" ajax="false" icon="ui-icon-gear"/>
+                        <p:menuitem value="Estadísticas" action="#{beanQuestions.estadisticasNav}" ajax="false" icon="ui-icon-gear" update="content"/>  
                     </p:submenu>
                 </p:menubar>
             </h:form>
@@ -23,6 +23,7 @@
     <ui:define name="content">
         <f:view>            
             <h:form id="formulacion_evaluaciones_form">
+                <p:growl id="messages"/>
                 <p:panel id="tabla">                    
                     <p:dataTable id="evaluaciones"
                                  var="evaluacion"
@@ -31,7 +32,7 @@
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                                  value="#{beanQuestions.listaEvaluaciones}"
                                  selection="#{beanQuestions.evaluacionSeleccionada}"
-                                 selectionMode="single"
+                                 selectionMode="single"                                 
                                  rowKey="#{evaluacion.idevaluacion}">
                         <f:facet name="header">
                             Listado de Evaluaciones
@@ -51,21 +52,29 @@
                                              update=":formulacion_evaluaciones_form:display"
                                              oncomplete="evalDialog.show()"
                                              style="margin: 10px 0 10px 0"
+                                             rendered="#{beanQuestions.verBotonNuevo}"
                                              icon="ui-icon-document"/>
-                            <p:commandButton id="viewButton" value="Mostrar" icon="ui-icon-search"/>                            
+                            <p:commandButton id="viewButton" 
+                                             value="Mostrar Estaditicas"
+                                             icon="ui-icon-search"
+                                             update=":formulacion_evaluaciones_form:display,messages"
+                                             action="#{beanQuestions.accionBotonMostrarEstadisticas}"
+                                             ajax="false"
+                                             rendered="#{!beanQuestions.verBotonNuevo}"/>                            
                         </f:facet>
                     </p:dataTable>
                 </p:panel>
-                <p:dialog id="dialog" header="Nueva Evaluación" widgetVar="evalDialog" resizable="false"  
+                <p:dialog id="dialog" header="Nueva Evaluación" widgetVar="evalDialog" resizable="false" rendered="#{beanQuestions.verBotonNuevo}"
                           width="280" showEffect="clip" hideEffect="fold">  
 
-                    <h:panelGrid id="display" columns="1" cellpadding="4">
+                    <h:panelGrid id="display" columns="1" cellpadding="4" >
                         <h:outputText value="Descripción Sitio a Evaluar" />
-                        <p:inputTextarea value="#{beanQuestions.evaluacionNueva.descripcionSitio}"/>
-                        <p:commandButton value="Aceptar" action="#{beanQuestions.accionBotonCrearNuevaEvaluacionAceptar}" update=":formulacion_evaluaciones_form:tabla" ajax="false"/>
+                        <p:inputTextarea id="descripcion_sitio" value="#{beanQuestions.evaluacionNueva.descripcionSitio}" immediate="true"/>
+                        <p:commandButton id="boton_descripcion_sitio" value="Aceptar" action="#{beanQuestions.accionBotonCrearNuevaEvaluacionAceptar}" update=":formulacion_evaluaciones_form:tabla" ajax="false"/>
                     </h:panelGrid>  
                 </p:dialog>                
             </h:form>
         </f:view>
     </ui:define>
 </ui:composition>
+

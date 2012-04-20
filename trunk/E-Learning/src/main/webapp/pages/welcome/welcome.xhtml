@@ -12,9 +12,9 @@
             <h:form id="menu_form">
                 <p:menubar>
                     <p:submenu label="Opciones" icon="ui-icon-document">
-                        <p:menuitem value="Evaluar" action="#{beanQuestions.irListadoFormulacionEvaluaciones}" ajax="false" icon="ui-icon-pencil" update="content"/>  
+                        <p:menuitem value="Evaluar" action="#{beanQuestions.evaluarNav}" ajax="false" icon="ui-icon-pencil" />  
                         <p:separator />
-                        <p:menuitem value="Estadisticas" action="#{beanQuestions.irEstadisticas}" ajax="false" icon="ui-icon-gear"/>
+                        <p:menuitem value="Estadísticas" action="#{beanQuestions.estadisticasNav}" ajax="false" icon="ui-icon-gear" />  
                     </p:submenu>
                 </p:menubar>
             </h:form>
