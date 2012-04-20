@@ -17,6 +17,7 @@
                         <p:separator />  
                         <p:menuitem value="Estadisticas" action="#{beanQuestions.estadisticasNav}" ajax="false" icon="ui-icon-gear" />  
                     </p:submenu>
+                    <p:menuitem value="Salir" action="#{beanQuestions.salir}" ajax="false" icon="ui-icon-newwin" />  
                 </p:menubar>
             </h:form>
         </f:view>
@@ -27,7 +28,7 @@
                 <p:growl id="messages"/>
                 <div style="float: left;">
                     <p:panel style="margin: 12px 0 0 0">
-                        <h3>Menú Gráficos</h3>
+                        <h3>Menu Graficos</h3>
                         <p:menu type="sliding" style="width:200px; height: 130px;">
                             <p:menuitem value="Promedio" actionListener="#{beanQuestions.accionMenuGraficoPromedio}" ajax="false" update="messages,show_grafic" icon="ui-icon-refresh" />
                             <p:submenu label="Promedio Area">
