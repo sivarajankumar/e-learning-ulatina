@@ -17,6 +17,7 @@
                         <p:separator />
                         <p:menuitem value="Estadisticas" action="#{beanQuestions.estadisticasNav}" ajax="false" icon="ui-icon-gear" />  
                     </p:submenu>
+                    <p:menuitem value="Salir" action="#{beanQuestions.salir}" ajax="false" icon="ui-icon-newwin" />  
                 </p:menubar>
             </h:form>
         </f:view>
@@ -25,8 +26,10 @@
         <f:view>
             <h:form id="welcome_form">
                 <center>
+                    <div style="height: 300px">
                     <h:outputLabel value="Welcome to the Evaluation E-Learning Platform"
-                                   style="font-size: 40px; font-weight: bold"/>
+                                   style="font-size: 40px; font-weight: bold;"/>
+                    </div>
                 </center>
             </h:form>
         </f:view>
