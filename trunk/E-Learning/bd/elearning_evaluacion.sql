@@ -18,32 +18,31 @@ USE `elearning`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `persona`
+-- Table structure for table `evaluacion`
 --
 
-DROP TABLE IF EXISTS `persona`;
+DROP TABLE IF EXISTS `evaluacion`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `persona` (
-  `idpersona` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(45) NOT NULL,
-  `apellido1` varchar(45) NOT NULL,
-  `apellido2` varchar(45) NOT NULL,
-  `idusuario` int(11) DEFAULT NULL,
-  PRIMARY KEY (`idpersona`),
-  KEY `personaUsuarioFK` (`idusuario`),
-  CONSTRAINT `personaUsuarioFK` FOREIGN KEY (`idusuario`) REFERENCES `usuario` (`idusuario`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+CREATE TABLE `evaluacion` (
+  `idevaluacion` int(11) NOT NULL AUTO_INCREMENT,
+  `descripcion_sitio` varchar(400) NOT NULL,
+  `indicador_terminada` int(1) NOT NULL DEFAULT '0',
+  `idusuario` int(11) NOT NULL,
+  PRIMARY KEY (`idevaluacion`),
+  KEY `usuarioEvaluacionFK` (`idusuario`),
+  CONSTRAINT `usuarioEvaluacionFK` FOREIGN KEY (`idusuario`) REFERENCES `usuario` (`idusuario`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `persona`
+-- Dumping data for table `evaluacion`
 --
 
-LOCK TABLES `persona` WRITE;
-/*!40000 ALTER TABLE `persona` DISABLE KEYS */;
-INSERT INTO `persona` VALUES (1,'Steven','Barba','Obando',1),(2,'Angie','Charris','Bueno',2),(3,'Wagner','Porras','Montero',3);
-/*!40000 ALTER TABLE `persona` ENABLE KEYS */;
+LOCK TABLES `evaluacion` WRITE;
+/*!40000 ALTER TABLE `evaluacion` DISABLE KEYS */;
+INSERT INTO `evaluacion` VALUES (1,'Nueva',0,1),(2,'hhjhg',0,1),(3,'evaluacion Latina',0,1),(4,'dede',0,1),(5,'mierda',0,1),(6,'mierda 2',0,1);
+/*!40000 ALTER TABLE `evaluacion` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -55,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-04-20  0:04:03
+-- Dump completed on 2012-04-20  0:04:04

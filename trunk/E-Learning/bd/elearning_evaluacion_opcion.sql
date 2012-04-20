@@ -18,32 +18,30 @@ USE `elearning`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `persona`
+-- Table structure for table `evaluacion_opcion`
 --
 
-DROP TABLE IF EXISTS `persona`;
+DROP TABLE IF EXISTS `evaluacion_opcion`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `persona` (
-  `idpersona` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(45) NOT NULL,
-  `apellido1` varchar(45) NOT NULL,
-  `apellido2` varchar(45) NOT NULL,
-  `idusuario` int(11) DEFAULT NULL,
-  PRIMARY KEY (`idpersona`),
-  KEY `personaUsuarioFK` (`idusuario`),
-  CONSTRAINT `personaUsuarioFK` FOREIGN KEY (`idusuario`) REFERENCES `usuario` (`idusuario`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+CREATE TABLE `evaluacion_opcion` (
+  `idevaluacion` int(11) NOT NULL,
+  `idopcion` int(11) NOT NULL,
+  PRIMARY KEY (`idevaluacion`,`idopcion`),
+  KEY `evaluacionOpcionFK` (`idopcion`),
+  KEY `opcionEvaluacionFK` (`idevaluacion`),
+  CONSTRAINT `evaluacionOpcionFK` FOREIGN KEY (`idopcion`) REFERENCES `opcion` (`idopcion`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `opcionEvaluacionFK` FOREIGN KEY (`idevaluacion`) REFERENCES `evaluacion` (`idevaluacion`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `persona`
+-- Dumping data for table `evaluacion_opcion`
 --
 
-LOCK TABLES `persona` WRITE;
-/*!40000 ALTER TABLE `persona` DISABLE KEYS */;
-INSERT INTO `persona` VALUES (1,'Steven','Barba','Obando',1),(2,'Angie','Charris','Bueno',2),(3,'Wagner','Porras','Montero',3);
-/*!40000 ALTER TABLE `persona` ENABLE KEYS */;
+LOCK TABLES `evaluacion_opcion` WRITE;
+/*!40000 ALTER TABLE `evaluacion_opcion` DISABLE KEYS */;
+/*!40000 ALTER TABLE `evaluacion_opcion` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -55,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-04-20  0:04:03
+-- Dump completed on 2012-04-20  0:04:04
