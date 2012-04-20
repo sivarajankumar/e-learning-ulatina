@@ -10,30 +10,36 @@
     <navigation-rule>
         <from-view-id>/index.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>Responder Preguntas</from-outcome>
-            <to-view-id>/pages/questions/questions.xhtml</to-view-id>
-        </navigation-case>
-        <navigation-case>
             <from-outcome>welcome</from-outcome>
             <to-view-id>/pages/welcome/welcome.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>/pages/welcome/welcome.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>Responder Preguntas</from-outcome>
-            <to-view-id>/pages/questions/questions.xhtml</to-view-id>
+            <from-outcome>Formular Evaluacion</from-outcome>
+            <to-view-id>/pages/questions/listado_formulacion_evaluaciones.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/pages/questions/questions.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>welcome</from-outcome>
+            <to-view-id>/pages/welcome/welcome.xhtml</to-view-id>
         </navigation-case>
         <navigation-case>
             <from-outcome>Formular Evaluacion</from-outcome>
             <to-view-id>/pages/questions/listado_formulacion_evaluaciones.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
+    
     <navigation-rule>
-        <from-view-id>/pages/questions/questions.xhtml</from-view-id>
+        <from-view-id>/pages/questions/listado_formulacion_evaluaciones.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>welcome</from-outcome>
-            <to-view-id>/pages/welcome/welcome.xhtml</to-view-id>
+            <from-outcome>Responder Preguntas</from-outcome>
+            <to-view-id>/pages/questions/questions.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
 </faces-config>

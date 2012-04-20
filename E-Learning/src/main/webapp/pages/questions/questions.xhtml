@@ -34,7 +34,7 @@
                             <p:column>
                                 <p:panel id="id_panel_opciones"
                                          header="#{pregunta.pregunta}">
-                                    <p:selectOneRadio value="#{pregunta.indexOpcionSeleccionada}">
+                                    <p:selectOneRadio value="#{pregunta.indexOpcionSeleccionada}" layout="pageDirection" rendered="true">
                                         <f:selectItems value="#{pregunta.listaSelectItems}"/>
                                     </p:selectOneRadio>
                                 </p:panel>
@@ -44,7 +44,10 @@
                 </p:accordionPanel>
                 <p:outputPanel>
                     <p:commandButton value="Terminar" style="margin: 30px 0 0 0" ajax="false"
-                                     actionListener="#{beanQuestions.accionBotonFormularioAceptar}"/>
+                                     action="#{beanQuestions.accionBotonFormularioAceptar}"/>
+                    <p:commandButton value="Cancelar" style="margin: 30px 0 0 10px" ajax="false"
+                                     action="#{beanQuestions.irListadoFormulacionEvaluaciones}"
+                                     immediate="true"/>
                 </p:outputPanel>
             </h:form>
         </f:view>

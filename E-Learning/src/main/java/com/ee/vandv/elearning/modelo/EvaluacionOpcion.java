@@ -14,37 +14,37 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author stevenziggiz
  */
 @Entity
-@Table(name = "opcion_usuario", catalog = "elearning", schema = "")
+@Table(name = "evaluacion_opcion", catalog = "elearning", schema = "")
 @XmlRootElement
-public class OpcionUsuario extends ObjetoBase implements Serializable {
+public class EvaluacionOpcion extends ObjetoBase implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
-    private OpcionUsuarioPK opcionUsuarioPK;
+    private EvaluacionOpcionPK opcionUsuarioPK;
     
     @JoinColumn(name="IDOPCION", referencedColumnName="IDOPCION",nullable=false,insertable=false,updatable=false)
     @ManyToOne(optional=false,fetch= FetchType.EAGER)
     private Opcion opcion;
     
-    @JoinColumn(name="IDUSUARIO", referencedColumnName="IDUSUARIO",nullable=false,insertable=false,updatable=false)
+    @JoinColumn(name="IDEVALUACION", referencedColumnName="IDEVALUACION",nullable=false,insertable=false,updatable=false)
     @ManyToOne(optional=false,fetch= FetchType.EAGER)
-    private Usuario usuario;
+    private Evaluacion evaluacion;
 
-    public OpcionUsuario() {
+    public EvaluacionOpcion() {
     }
 
-    public OpcionUsuario(Opcion opcion, Usuario usuario) {
-        this.opcionUsuarioPK = new OpcionUsuarioPK(opcion.getIdopcion(), usuario.getIdusuario());
+    public EvaluacionOpcion(Opcion opcion, Evaluacion evaluacion) {
+        this.opcionUsuarioPK = new EvaluacionOpcionPK(opcion.getIdopcion(), evaluacion.getIdevaluacion());
         this.opcion = opcion;
-        this.usuario = usuario;
+        this.evaluacion = evaluacion;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof OpcionUsuario)) {
+        if (!(object instanceof EvaluacionOpcion)) {
             return false;
         }
-        OpcionUsuario other = (OpcionUsuario) object;
+        EvaluacionOpcion other = (EvaluacionOpcion) object;
         if ((this.opcionUsuarioPK == null && other.opcionUsuarioPK != null) || (this.opcionUsuarioPK != null && !this.opcionUsuarioPK.equals(other.opcionUsuarioPK))) {
             return false;
         }
@@ -76,19 +76,19 @@ public class OpcionUsuario extends ObjetoBase implements Serializable {
     public void setOpcion(Opcion opcion) {
         this.opcion = opcion;
     }
-
+    
     /**
-     * @return the usuario
+     * @return the evaluacion
      */
-    public Usuario getUsuario() {
-        return usuario;
+    public Evaluacion getEvaluacion() {
+        return evaluacion;
     }
 
     /**
-     * @param usuario the usuario to set
+     * @param evaluacion the evaluacion to set
      */
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setEvaluacion(Evaluacion evaluacion) {
+        this.evaluacion = evaluacion;
     }
     
 }
