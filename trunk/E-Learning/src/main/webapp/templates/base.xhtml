@@ -5,11 +5,10 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-    
-    <head>
+
+    <h:head>
         <title>#{titulo}</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <META HTTP-EQUIV="Pragma" CONTENT="no-cache"/>        
+        <meta http-equiv="Content-type" content="application/xhtml+xml; charset=UTF-8" />
         <script type="text/javascript">
             if (window.history) {
                 function noBack(){
@@ -39,10 +38,11 @@
                 }
             </script>
         </ui:insert>
-    </head>
-    <body onload="history.forward()" onunload="history.go(1);">
+    </h:head>
+    <h:body onload="history.forward()" onunload="history.go(1);">
         <div id="workArea">
+            <ui:insert name="menu"/>
             <ui:insert name="content"/>
         </div>
-    </body>
+    </h:body>
 </html>

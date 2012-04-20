@@ -36,7 +36,7 @@
      <!-- Este parametro cambia el tema por defecto de la aplicacion -->
     <context-param>
         <param-name>primefaces.THEME</param-name>
-        <param-value>sam</param-value>
+        <param-value>aristo</param-value>
     </context-param>
     
     <servlet>
