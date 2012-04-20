@@ -302,6 +302,7 @@ public class BeanQuestions extends BeanBase {
      */
     public String evaluarNav() {
         verBotonNuevo = true;
+        listaEvaluaciones = servicio.seleccionar("Evaluacion.findAll");
         return irListadoFormulacionEvaluaciones();
     }
 
@@ -310,6 +311,7 @@ public class BeanQuestions extends BeanBase {
         meterGaugeModel = null;
         evaluacionNueva = null;
         verBotonNuevo = false;
+        listaEvaluaciones = servicio.seleccionar("Evaluacion.findAll");
         return irListadoFormulacionEvaluaciones();
     }
 
@@ -343,6 +345,11 @@ public class BeanQuestions extends BeanBase {
 
     public String irEstadisticas() {
         return "Estadisticas";
+    }
+    
+    public String salir(){
+        listaCategorias = null;
+        return "salir";
     }
 
     /**
