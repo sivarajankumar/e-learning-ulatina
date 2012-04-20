@@ -7,9 +7,13 @@ import com.ee.vandv.elearning.modelo.Evaluacion;
 import com.ee.vandv.elearning.modelo.EvaluacionOpcion;
 import com.ee.vandv.elearning.modelo.Pregunta;
 import com.ee.vandv.elearning.modelo.Usuario;
+import com.ee.vandv.elearning.util.Graficos;
+import com.ee.vandv.elearning.util.IntervalosCategoria;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -17,7 +21,8 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
-import org.primefaces.model.chart.MeterGaugeChartModel; 
+import org.primefaces.model.chart.MeterGaugeChartModel;
+import sun.java2d.pipe.RenderBuffer;
 
 /**
  *
@@ -27,15 +32,19 @@ import org.primefaces.model.chart.MeterGaugeChartModel;
 @SessionScoped
 public class BeanQuestions extends BeanBase {
 
+    private boolean verBotonNuevo;
     private List<Evaluacion> listaEvaluaciones;
     private Evaluacion evaluacionSeleccionada;
     private Evaluacion evaluacionNueva;
-    private String grafic = "/pages/evaluation/grafic/grafico_promedio.xhtml";
-    private MeterGaugeChartModel meterGaugeModel; 
-    
+    private String grafic;
+    private Graficos grafico;
+    private MeterGaugeChartModel meterGaugeModel;
+    //Variable donde se almacena el promedio
+    Number promedio;
+    //Listado de graficos por area
+    private List<MeterGaugeChartModel> listaGraficosArea;
     private List<Categoria> listaCategorias;
     private Usuario usuarioLogueado;
-    
     @Inject
     ServicioBase servicio;
 
@@ -56,28 +65,62 @@ public class BeanQuestions extends BeanBase {
         usuarioLogueado = obtenerUsuario("admin", "adminadmin");
     }
 
-    private void createMeterGaugeModel() {  
-  
-        List<Number> intervals = new ArrayList<Number>(){{  
-            add(20);  
-            add(50);  
-            add(120);  
-            add(220);  
-        }};  
-  
-        meterGaugeModel = new MeterGaugeChartModel("Promedio", 140, intervals);  
-    }  
-    
+    private void createMeterGaugeModel() {
+        List<Number> intervals = new ArrayList<Number>() {
+
+            {
+                add(0);
+                add(500);
+                add(1000);
+                add(1500);
+                add(2000);
+                add(2500);
+            }
+        };
+        meterGaugeModel = new MeterGaugeChartModel("Promedio", promedio, intervals);
+    }
+
+    private MeterGaugeChartModel createMeterGaugeModel(String leyenda, Number promedio) {
+        List<Number> intervals = null;
+        if (leyenda.equals("Usabilidad")) {
+            intervals = convertirANumber(IntervalosCategoria.USABILIDAD.getIntervalo());
+        } else {
+            if (leyenda.equals("Funcionalidad")) {
+                intervals = convertirANumber(IntervalosCategoria.FUNCIONALIDAD.getIntervalo());
+            } else {
+                if (leyenda.equals("Eficiencia")) {
+                    intervals = convertirANumber(IntervalosCategoria.EFICIENCIA.getIntervalo());
+                } else {
+                    if (leyenda.equals("Confiabilidad")) {
+                        intervals = convertirANumber(IntervalosCategoria.CONFIABILIDAD.getIntervalo());
+                    }
+                }
+            }
+        }
+        return new MeterGaugeChartModel(leyenda, promedio, intervals);
+    }
+
+    private List<Number> convertirANumber(Integer[] intervalos) {
+        Integer number;
+        List<Number> retorno = new ArrayList<Number>();
+        List listaIntervalos = Arrays.asList(intervalos);
+        for (Object object : listaIntervalos) {
+            number = (Integer) object;
+            retorno.add(number);
+        }
+        return retorno;
+    }
+
     private Usuario obtenerUsuario(String usuario, String clave) {
         List<Usuario> usuarios = servicio.seleccionar("Usuario.findByUsuarioClave", usuario, clave);
-        if(!usuarios.isEmpty()){
+        if (!usuarios.isEmpty()) {
             return usuarios.get(0);
         }
         return null;
     }
-    
-    private void cargarCategorias(){
-        listaCategorias = servicio.seleccionar(Categoria.class);
+
+    private List<Categoria> cargarCategorias() {
+        return servicio.seleccionar(Categoria.class);
     }
 
     private void cargarRespuestas() {
@@ -97,7 +140,7 @@ public class BeanQuestions extends BeanBase {
                 listaRespuestasEvaluacion.add(evaluacionOpcion);
             }
         }
-        guardarRespuestaUsuario(listaRespuestasEvaluacion);        
+        guardarRespuestaUsuario(listaRespuestasEvaluacion);
     }
 
     private void guardarRespuestaUsuario(List<EvaluacionOpcion> listaRespuestasUsuario) {
@@ -106,76 +149,202 @@ public class BeanQuestions extends BeanBase {
         for (EvaluacionOpcion EvaluacionOpcion : listaRespuestasUsuario) {
             servicio.guardar(EvaluacionOpcion);
         }
-    }    
+    }
+
+    /**
+     * %%%%%%######%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%######%%%%%%*
+     */
+    /**
+     * %%%%%%######%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%######%%%%%%*
+     */
+    /**
+     * %%%%%%######%%%%%%%%%--------GRAFICOS-------%%%%%%%%%%%%%%######%%%%%%*
+     */
+    /**
+     * %%%%%%######%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%######%%%%%%*
+     */
+    /**
+     * %%%%%%######%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%######%%%%%%*
+     */
+    private void procesarPromedio() {
+        List<EvaluacionOpcion> listaEvaluacionOpciones;
+        listaEvaluacionOpciones = servicio.seleccionar("EvaluacionOpcion.findByIdEvaluacion", evaluacionSeleccionada.getIdevaluacion());
+        promedio = 0;
+        for (EvaluacionOpcion evaluacionOpcion : listaEvaluacionOpciones) {
+            promedio = promedio.doubleValue() + evaluacionOpcion.getOpcion().getPuntaje();
+        }
+    }
+
+    private List<MeterGaugeChartModel> procesarGraficosArea(int numeroEvaluaciones) {
+        Number promedioTemp = 0;
+        List<Categoria> listaCategoriasTemp;
+        List<EvaluacionOpcion> listaEvaluacionOpciones;
+        List<MeterGaugeChartModel> listaGraficosTemp = new ArrayList<MeterGaugeChartModel>();
+        listaCategoriasTemp = cargarCategorias();
+        for (Categoria categoria : listaCategoriasTemp) {
+            listaEvaluacionOpciones = servicio.seleccionar("EvaluacionOpcion.findByOpcionPorEvaluacionCategoria",evaluacionSeleccionada.getIdevaluacion(), categoria.getIdcategoria());
+            for (EvaluacionOpcion evaluacionOpcion : listaEvaluacionOpciones) {
+                promedioTemp = promedioTemp.doubleValue() + evaluacionOpcion.getOpcion().getPuntaje();
+            }
+            listaGraficosTemp.add(createMeterGaugeModel(categoria.getDescripcion(), promedioTemp.intValue() /numeroEvaluaciones));
+            promedioTemp = 0;
+        }
+        return listaGraficosTemp;
+    }
     
-    /**%%%%%%######%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%######%%%%%%**/
-    /**%%%%%%######%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%######%%%%%%**/
-    /**%%%%%%######%%%%%%%%%--------EVENTOS-------%%%%%%%%%%%%%%%######%%%%%%**/
-    /**%%%%%%######%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%######%%%%%%**/
-    /**%%%%%%######%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%######%%%%%%**/
-    public void accionBotonCrearNuevaEvaluacionNuevo(ActionEvent event){
+    private List<MeterGaugeChartModel> procesarGraficosAreaTotal(int numeroEvaluaciones) {
+        Number promedioTemp = 0;
+        List<Categoria> listaCategoriasTemp;
+        List<EvaluacionOpcion> listaEvaluacionOpciones;
+        List<MeterGaugeChartModel> listaGraficosTemp = new ArrayList<MeterGaugeChartModel>();
+        listaCategoriasTemp = cargarCategorias();
+        for (Categoria categoria : listaCategoriasTemp) {
+            listaEvaluacionOpciones = servicio.seleccionar("EvaluacionOpcion.findByOpcionPorCategoria", categoria.getIdcategoria());
+            for (EvaluacionOpcion evaluacionOpcion : listaEvaluacionOpciones) {
+                promedioTemp = promedioTemp.doubleValue() + evaluacionOpcion.getOpcion().getPuntaje();
+            }
+            listaGraficosTemp.add(createMeterGaugeModel(categoria.getDescripcion(), promedioTemp.intValue() /numeroEvaluaciones));
+            promedioTemp = 0;
+        }
+        return listaGraficosTemp;
+    }
+
+    /**
+     * %%%%%%######%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%######%%%%%%*
+     */
+    /**
+     * %%%%%%######%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%######%%%%%%*
+     */
+    /**
+     * %%%%%%######%%%%%%%%%--------EVENTOS-------%%%%%%%%%%%%%%%######%%%%%%*
+     */
+    /**
+     * %%%%%%######%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%######%%%%%%*
+     */
+    /**
+     * %%%%%%######%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%######%%%%%%*
+     */
+    public String accionBotonMostrarEstadisticas() {
+        if (evaluacionSeleccionada != null) {
+            return irEstadisticas();
+        } else {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Seleccione una Evaluación!", "Error"));
+            FacesContext.getCurrentInstance().renderResponse();
+            return irListadoFormulacionEvaluaciones();
+        }
+    }
+
+    public void accionBotonCrearNuevaEvaluacionNuevo(ActionEvent event) {
         evaluacionNueva = new Evaluacion();
         FacesContext.getCurrentInstance().renderResponse();
     }
+
     /**
      * Crear la nueva evaluacion
-     * @param event 
+     *
+     * @param event
      */
-    public String accionBotonCrearNuevaEvaluacionAceptar(){
+    public String accionBotonCrearNuevaEvaluacionAceptar() {
         evaluacionNueva.setUsuario(usuarioLogueado);
         servicio.guardar(evaluacionNueva);
-        cargarCategorias();
+        listaCategorias = cargarCategorias();
         cargarRespuestas();
         return irResponderPreguntas();
     }
-    
+
     public String accionBotonFormularioAceptar() {
         botonFormularioAceptar();
         listaEvaluaciones = servicio.seleccionar("Evaluacion.findAll");
         return irListadoFormulacionEvaluaciones();
     }
-    
-    public String accionBotonCrearNuevaEvaluacionCancelar(){
+
+    public String accionBotonCrearNuevaEvaluacionCancelar() {
         servicio.eliminar(evaluacionNueva);
         listaEvaluaciones = servicio.seleccionar("Evaluacion.findAll");
         return irListadoFormulacionEvaluaciones();
     }
+
+    public void accionMenuGraficoPromedio(ActionEvent event) {
+        grafico = Graficos.PROMEDIOS;
+        procesarPromedio();
+        createMeterGaugeModel();
+//        FacesContext context = FacesContext.getCurrentInstance();          
+//        context.addMessage(null, new FacesMessage("Gráfico", "Promedio"));
+//        FacesContext.getCurrentInstance().renderResponse();
+    }
+
+    public void accionMenuGraficoPromedioArea(ActionEvent event) {
+        grafico = Graficos.PROMEDIOS_AREA;      
+        listaGraficosArea = procesarGraficosArea(1);
+    }
     
-    /**%%%%%%######%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%######%%%%%%**/
-    /**%%%%%%######%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%######%%%%%%**/
-    /**%%%%%%######%%%%%%%%-------NAVEGACION-------%%%%%%%%%%%%%%######%%%%%%**/
-    /**%%%%%%######%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%######%%%%%%**/
-    /**%%%%%%######%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%######%%%%%%**/
-    
+    public void accionMenuGraficoPromedioAreaTotal(ActionEvent event) {
+        grafico = Graficos.PROMEDIOS_AREA;
+        List<Evaluacion> listaTemporalEvaluacion = servicio.seleccionar(Evaluacion.class);
+        listaGraficosArea = procesarGraficosAreaTotal(listaTemporalEvaluacion.size());
+    }
+
+    /**
+     * %%%%%%######%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%######%%%%%%*
+     */
+    /**
+     * %%%%%%######%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%######%%%%%%*
+     */
+    /**
+     * %%%%%%######%%%%%%%%-------NAVEGACION-------%%%%%%%%%%%%%%######%%%%%%*
+     */
+    /**
+     * %%%%%%######%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%######%%%%%%*
+     */
+    /**
+     * %%%%%%######%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%######%%%%%%*
+     */
+    public String evaluarNav() {
+        verBotonNuevo = true;
+        return irListadoFormulacionEvaluaciones();
+    }
+
+    public String estadisticasNav() {
+        listaGraficosArea = null;
+        meterGaugeModel = null;
+        evaluacionNueva = null;
+        verBotonNuevo = false;
+        return irListadoFormulacionEvaluaciones();
+    }
+
     /**
      * Redirecciona a la pagina de iniciar una nueva formulacion de evaluacion
-     * @return 
+     *
+     * @return
      */
-    public String irListadoFormulacionEvaluaciones(){
+    public String irListadoFormulacionEvaluaciones() {
         return "Formular Evaluacion";
     }
-    
+
     /**
-     * Redirecciona a la pagina donde se encuentra el formulario con todas las preguntas.
-     * @return 
+     * Redirecciona a la pagina donde se encuentra el formulario con todas las
+     * preguntas.
+     *
+     * @return
      */
-    public String irResponderPreguntas(){
+    public String irResponderPreguntas() {
         return "Responder Preguntas";
     }
-    
+
     /**
      * Redirecciona a la pagina de bienvenida
-     * @return 
+     *
+     * @return
      */
-    public String irBienvenida(){
+    public String irBienvenida() {
         return "welcome";
     }
-    
-    public String irEstadisticas(){
-        createMeterGaugeModel();
+
+    public String irEstadisticas() {
         return "Estadisticas";
     }
-    
+
     /**
      * @return the listaCategorias
      */
@@ -236,7 +405,7 @@ public class BeanQuestions extends BeanBase {
      * @return the evaluacionNueva
      */
     public Evaluacion getEvaluacionNueva() {
-        if(evaluacionNueva == null){
+        if (evaluacionNueva == null) {
             evaluacionNueva = new Evaluacion();
         }
         return evaluacionNueva;
@@ -275,5 +444,47 @@ public class BeanQuestions extends BeanBase {
      */
     public void setMeterGaugeModel(MeterGaugeChartModel meterGaugeModel) {
         this.meterGaugeModel = meterGaugeModel;
+    }
+
+    /**
+     * @return the grafico
+     */
+    public Graficos getGrafico() {
+        return grafico;
+    }
+
+    /**
+     * @param grafico the grafico to set
+     */
+    public void setGrafico(Graficos grafico) {
+        this.grafico = grafico;
+    }
+
+    /**
+     * @return the listaGraficosArea
+     */
+    public List<MeterGaugeChartModel> getListaGraficosArea() {
+        return listaGraficosArea;
+    }
+
+    /**
+     * @param listaGraficosArea the listaGraficosArea to set
+     */
+    public void setListaGraficosArea(List<MeterGaugeChartModel> listaGraficosArea) {
+        this.listaGraficosArea = listaGraficosArea;
+    }
+
+    /**
+     * @return the verBotonNuevo
+     */
+    public boolean isVerBotonNuevo() {
+        return verBotonNuevo;
+    }
+
+    /**
+     * @param verBotonNuevo the verBotonNuevo to set
+     */
+    public void setVerBotonNuevo(boolean verBotonNuevo) {
+        this.verBotonNuevo = verBotonNuevo;
     }
 }

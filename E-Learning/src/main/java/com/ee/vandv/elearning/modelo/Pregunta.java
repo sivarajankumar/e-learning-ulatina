@@ -70,7 +70,7 @@ public class Pregunta extends ObjetoBase implements Serializable {
         listaSelectItems = new ArrayList<SelectItem>();
         SelectItem selectItem;
         for (Opcion opcion : opcionList) {
-            selectItem = new SelectItem(opcionList.indexOf(opcion), opcion.getDescripcion());
+            selectItem = new SelectItem(opcionList.indexOf(opcion), opcion.getPuntaje().toString());
             listaSelectItems.add(selectItem);
         }
     }

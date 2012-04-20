@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:p="http://primefaces.org/ui">
+    <p:dataGrid var="grafico" value="#{beanQuestions.listaGraficosArea}" rows="4" columns="1">
+        <p:column>
+            <p:panel header="#{grafico.label}">
+                <p:meterGaugeChart id="custom" value="#{grafico}"
+                                   showTickLabels="true"
+                                   title="Promedio Total"
+                                   labelHeightAdjust="140"
+                                   intervalOuterRadius="150" seriesColors="f6290a, f6290a, D29B26, CCD226, A1D226, 31D226"
+                                   style="width:450px;height:300px" />
+            </p:panel>
+        </p:column>
+    </p:dataGrid>
+
+
+</div>

@@ -12,9 +12,9 @@
             <h:form id="menu_form">
                 <p:menubar>  
                     <p:submenu label="Opciones" icon="ui-icon-document">
-                        <p:menuitem value="Evaluar" action="#{beanQuestions.irResponderPreguntas}" ajax="false" icon="ui-icon-pencil" update="content"/>  
+                        <p:menuitem value="Evaluar" action="#{beanQuestions.evaluarNav}" ajax="false" icon="ui-icon-pencil" />  
                         <p:separator />  
-                        <p:menuitem value="Estadisticas" action="#{beanQuestions.irEstadisticas}" ajax="false" icon="ui-icon-gear"/>
+                        <p:menuitem value="Estadísticas" action="#{beanQuestions.estadisticasNav}" ajax="false" icon="ui-icon-gear" />  
                     </p:submenu>
                 </p:menubar>
             </h:form>
@@ -23,6 +23,7 @@
     <ui:define name="content">
         <f:view>
             <h:form id="accordion_form">
+                <p:growl id="messages"/>
                 <p:accordionPanel id="id_accordion"
                                   value="#{beanQuestions.listaCategorias}"
                                   var="categoria">
@@ -34,7 +35,7 @@
                             <p:column>
                                 <p:panel id="id_panel_opciones"
                                          header="#{pregunta.pregunta}">
-                                    <p:selectOneRadio value="#{pregunta.indexOpcionSeleccionada}" layout="pageDirection" rendered="true">
+                                    <p:selectOneRadio value="#{pregunta.indexOpcionSeleccionada}" layout="pageDirection" requiredMessage="#{pregunta.pregunta}" required="true" rendered="true">
                                         <f:selectItems value="#{pregunta.listaSelectItems}"/>
                                     </p:selectOneRadio>
                                 </p:panel>
@@ -44,7 +45,7 @@
                 </p:accordionPanel>
                 <p:outputPanel>
                     <p:commandButton value="Terminar" style="margin: 30px 0 0 0" ajax="false"
-                                     action="#{beanQuestions.accionBotonFormularioAceptar}" update="content"/>
+                                     action="#{beanQuestions.accionBotonFormularioAceptar}" update="content,messages"/>
                     <p:commandButton value="Cancelar" style="margin: 30px 0 0 10px" ajax="false"
                                      action="#{beanQuestions.accionBotonCrearNuevaEvaluacionCancelar}"
                                      immediate="true" update="content"/>

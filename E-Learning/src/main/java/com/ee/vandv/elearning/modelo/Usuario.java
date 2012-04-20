@@ -38,7 +38,7 @@ public class Usuario extends ObjetoBase implements Serializable {
     @Column(name = "clave", length = 45)
     private String clave;
     @JoinColumn(name = "idperfil", referencedColumnName = "idperfil")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Perfil idperfil;
 
     public Usuario() {
