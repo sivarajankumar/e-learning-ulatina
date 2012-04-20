@@ -14,7 +14,7 @@
                     <p:submenu label="Opciones" icon="ui-icon-document">
                         <p:menuitem value="Evaluar" action="#{beanQuestions.irResponderPreguntas}" ajax="false" icon="ui-icon-pencil"/>  
                         <p:separator />  
-                        <p:menuitem value="Estadisticas" icon="ui-icon-gear"/>  
+                        <p:menuitem value="Estadisticas" action="#{beanQuestions.irEstadisticas}" ajax="false" icon="ui-icon-gear"/>  
                     </p:submenu>
                 </p:menubar>
             </h:form>
@@ -22,30 +22,22 @@
     </ui:define>
     <ui:define name="content">
         <f:view>
-            <h:form id="accordion_form">
-                <p:accordionPanel id="id_accordion"
-                                  value="#{beanQuestions.listaCategorias}"
-                                  var="categoria">
-                    <p:tab title="#{categoria.descripcion}">
-                        <p:dataGrid id="id_dataGrid_preguntas"
-                                    columns="1"
-                                    value="#{categoria.preguntaList}"
-                                    var="pregunta">
-                            <p:column>
-                                <p:panel id="id_panel_opciones"
-                                         header="#{pregunta.pregunta}">
-                                    <p:selectOneRadio value="#{pregunta.indexOpcionSeleccionada}">
-                                        <f:selectItems value="#{pregunta.listaSelectItems}"/>
-                                    </p:selectOneRadio>
-                                </p:panel>
-                            </p:column>
-                        </p:dataGrid>
-                    </p:tab>
-                </p:accordionPanel>
-                <p:outputPanel>
-                    <p:commandButton value="Terminar" style="margin: 30px 0 0 0" ajax="false"
-                                     actionListener="#{beanQuestions.accionBotonFormularioAceptar}"/>
-                </p:outputPanel>
+            <h:form id="estadisticas_form">
+                <p:growl id="messages"/>
+                <p:panelGrid columns="2">
+                    <p:panel>
+                        <h3>Menú Gráficos</h3>  
+                        <p:menu type="sliding" style="width:200px; height: 130px;">  
+                            <p:submenu label="Ajax Menuitems" icon="ui-icon-refresh">  
+                                <p:menuitem value="Save" update="messages" icon="ui-icon-disk" />
+                                <p:menuitem value="Update"  update="messages" icon="ui-icon-arrowrefresh-1-w"/>  
+                            </p:submenu>
+                        </p:menu>
+                    </p:panel>
+                    <p:panel style="width: 1100px">
+                        <ui:include src="#{beanQuestions.grafic}" rendered="#{beanQuestions.grafic == null ? false : true}"/>
+                    </p:panel>
+                </p:panelGrid>
             </h:form>
         </f:view>
     </ui:define>

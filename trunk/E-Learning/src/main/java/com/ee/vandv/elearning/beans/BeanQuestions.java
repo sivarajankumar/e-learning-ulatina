@@ -21,6 +21,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
+import org.primefaces.model.chart.MeterGaugeChartModel; 
 
 /**
  *
@@ -33,6 +34,8 @@ public class BeanQuestions extends BeanBase {
     private List<Evaluacion> listaEvaluaciones;
     private Evaluacion evaluacionSeleccionada;
     private Evaluacion evaluacionNueva;
+    private String grafic = "/pages/evaluation/grafic/grafico_promedio.xhtml";
+    private MeterGaugeChartModel meterGaugeModel; 
     
     private List<Categoria> listaCategorias;
     private Usuario usuarioLogueado;
@@ -57,6 +60,18 @@ public class BeanQuestions extends BeanBase {
         usuarioLogueado = obtenerUsuario("admin", "adminadmin");
     }
 
+    private void createMeterGaugeModel() {  
+  
+        List<Number> intervals = new ArrayList<Number>(){{  
+            add(20);  
+            add(50);  
+            add(120);  
+            add(220);  
+        }};  
+  
+        meterGaugeModel = new MeterGaugeChartModel("Promedio", 140, intervals);  
+    }  
+    
     private Usuario obtenerUsuario(String usuario, String clave) {
         List<Usuario> usuarios = servicio.seleccionar("Usuario.findByUsuarioClave", usuario, clave);
         if(!usuarios.isEmpty()){
@@ -77,7 +92,7 @@ public class BeanQuestions extends BeanBase {
         }
     }
 
-    private String botonFormularioAceptar() {
+    private void botonFormularioAceptar() {
         EvaluacionOpcion evaluacionOpcion;
         List<EvaluacionOpcion> listaRespuestasEvaluacion = new ArrayList<EvaluacionOpcion>();
         for (Categoria categoria : listaCategorias) {
@@ -86,8 +101,7 @@ public class BeanQuestions extends BeanBase {
                 listaRespuestasEvaluacion.add(evaluacionOpcion);
             }
         }
-        guardarRespuestaUsuario(listaRespuestasEvaluacion);
-        return irListadoFormulacionEvaluaciones();
+        guardarRespuestaUsuario(listaRespuestasEvaluacion);        
     }
 
     private void guardarRespuestaUsuario(List<EvaluacionOpcion> listaRespuestasUsuario) {
@@ -96,11 +110,7 @@ public class BeanQuestions extends BeanBase {
         for (EvaluacionOpcion EvaluacionOpcion : listaRespuestasUsuario) {
             servicio.guardar(EvaluacionOpcion);
         }
-    }
-
-    public String accionBotonFormularioAceptar() {
-        return botonFormularioAceptar();
-    }
+    }    
     
     /**%%%%%%######%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%######%%%%%%**/
     /**%%%%%%######%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%######%%%%%%**/
@@ -121,6 +131,18 @@ public class BeanQuestions extends BeanBase {
         cargarCategorias();
         cargarRespuestas();
         return irResponderPreguntas();
+    }
+    
+    public String accionBotonFormularioAceptar() {
+        botonFormularioAceptar();
+        listaEvaluaciones = servicio.seleccionar("Evaluacion.findAll");
+        return irListadoFormulacionEvaluaciones();
+    }
+    
+    public String accionBotonCrearNuevaEvaluacionCancelar(){
+        servicio.eliminar(evaluacionNueva);
+        listaEvaluaciones = servicio.seleccionar("Evaluacion.findAll");
+        return irListadoFormulacionEvaluaciones();
     }
     
     /**%%%%%%######%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%######%%%%%%**/
@@ -152,6 +174,12 @@ public class BeanQuestions extends BeanBase {
     public String irBienvenida(){
         return "welcome";
     }
+    
+    public String irEstadisticas(){
+        createMeterGaugeModel();
+        return "Estadisticas";
+    }
+    
     /**
      * @return the listaCategorias
      */
@@ -223,5 +251,33 @@ public class BeanQuestions extends BeanBase {
      */
     public void setEvaluacionNueva(Evaluacion evaluacionNueva) {
         this.evaluacionNueva = evaluacionNueva;
+    }
+
+    /**
+     * @return the grafic
+     */
+    public String getGrafic() {
+        return grafic;
+    }
+
+    /**
+     * @param grafic the grafic to set
+     */
+    public void setGrafic(String grafic) {
+        this.grafic = grafic;
+    }
+
+    /**
+     * @return the meterGaugeModel
+     */
+    public MeterGaugeChartModel getMeterGaugeModel() {
+        return meterGaugeModel;
+    }
+
+    /**
+     * @param meterGaugeModel the meterGaugeModel to set
+     */
+    public void setMeterGaugeModel(MeterGaugeChartModel meterGaugeModel) {
+        this.meterGaugeModel = meterGaugeModel;
     }
 }
