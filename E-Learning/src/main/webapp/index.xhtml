@@ -10,7 +10,7 @@
     <ui:define name="content">
         <f:view>
             <h:form id="login_form">
-                <p:commandButton value="Login" action="#{beanQuestions.irBienvenida}" ajax="false"/>
+                <p:commandButton value="Login" action="#{beanQuestions.irBienvenida}" ajax="false" update="content"/>
             </h:form>
         </f:view>
     </ui:define>

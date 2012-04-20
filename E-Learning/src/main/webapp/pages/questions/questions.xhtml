@@ -12,9 +12,9 @@
             <h:form id="menu_form">
                 <p:menubar>  
                     <p:submenu label="Opciones" icon="ui-icon-document">
-                        <p:menuitem value="Evaluar" action="#{beanQuestions.irResponderPreguntas}" ajax="false" icon="ui-icon-pencil"/>  
+                        <p:menuitem value="Evaluar" action="#{beanQuestions.irResponderPreguntas}" ajax="false" icon="ui-icon-pencil" update="content"/>  
                         <p:separator />  
-                        <p:menuitem value="Estadisticas" icon="ui-icon-gear"/>  
+                        <p:menuitem value="Estadisticas" action="#{beanQuestions.irEstadisticas}" ajax="false" icon="ui-icon-gear"/>
                     </p:submenu>
                 </p:menubar>
             </h:form>
@@ -44,10 +44,10 @@
                 </p:accordionPanel>
                 <p:outputPanel>
                     <p:commandButton value="Terminar" style="margin: 30px 0 0 0" ajax="false"
-                                     action="#{beanQuestions.accionBotonFormularioAceptar}"/>
+                                     action="#{beanQuestions.accionBotonFormularioAceptar}" update="content"/>
                     <p:commandButton value="Cancelar" style="margin: 30px 0 0 10px" ajax="false"
-                                     action="#{beanQuestions.irListadoFormulacionEvaluaciones}"
-                                     immediate="true"/>
+                                     action="#{beanQuestions.accionBotonCrearNuevaEvaluacionCancelar}"
+                                     immediate="true" update="content"/>
                 </p:outputPanel>
             </h:form>
         </f:view>
