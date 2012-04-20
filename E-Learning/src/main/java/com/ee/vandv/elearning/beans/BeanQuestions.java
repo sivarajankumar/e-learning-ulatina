@@ -229,7 +229,7 @@ public class BeanQuestions extends BeanBase {
             return irEstadisticas();
         } else {
             FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Seleccione una Evaluación!", "Error"));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Seleccione una Evaluacion!", "Error"));
             FacesContext.getCurrentInstance().renderResponse();
             return irListadoFormulacionEvaluaciones();
         }
@@ -270,7 +270,7 @@ public class BeanQuestions extends BeanBase {
         procesarPromedio();
         createMeterGaugeModel();
 //        FacesContext context = FacesContext.getCurrentInstance();          
-//        context.addMessage(null, new FacesMessage("Gráfico", "Promedio"));
+//        context.addMessage(null, new FacesMessage("Gr�fico", "Promedio"));
 //        FacesContext.getCurrentInstance().renderResponse();
     }
 
