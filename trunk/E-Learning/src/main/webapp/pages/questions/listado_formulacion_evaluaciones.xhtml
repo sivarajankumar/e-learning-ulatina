@@ -10,11 +10,12 @@
     <ui:define name="menu">
         <f:view>
             <h:form id="menu_form">
-                <p:menubar>  
+                <p:menubar>
+                    <p:menuitem value="Inicio" action="#{beanQuestions.irBienvenida}" ajax="false" icon="ui-icon-home" />  
                     <p:submenu label="Opciones" icon="ui-icon-document">
                         <p:menuitem value="Evaluar" action="#{beanQuestions.evaluarNav}" ajax="false" icon="ui-icon-pencil" /> 
                         <p:separator />  
-                        <p:menuitem value="Estadísticas" action="#{beanQuestions.estadisticasNav}" ajax="false" icon="ui-icon-gear" update="content"/>  
+                        <p:menuitem value="Estadisticas" action="#{beanQuestions.estadisticasNav}" ajax="false" icon="ui-icon-gear" update="content"/>  
                     </p:submenu>
                 </p:menubar>
             </h:form>
@@ -40,7 +41,7 @@
                         <p:column headerText="ID">
                             #{evaluacion.idevaluacion}
                         </p:column>
-                        <p:column headerText="Descripción Sitio">
+                        <p:column headerText="Descripcion Sitio">
                             #{evaluacion.descripcionSitio}
                         </p:column>
                         <p:column headerText="Estado">
@@ -64,11 +65,11 @@
                         </f:facet>
                     </p:dataTable>
                 </p:panel>
-                <p:dialog id="dialog" header="Nueva Evaluación" widgetVar="evalDialog" resizable="false" rendered="#{beanQuestions.verBotonNuevo}"
+                <p:dialog id="dialog" header="Nueva Evaluacion" widgetVar="evalDialog" resizable="false" rendered="#{beanQuestions.verBotonNuevo}"
                           width="280" showEffect="clip" hideEffect="fold">  
 
                     <h:panelGrid id="display" columns="1" cellpadding="4" >
-                        <h:outputText value="Descripción Sitio a Evaluar" />
+                        <h:outputText value="Descripcion Sitio a Evaluar" />
                         <p:inputTextarea id="descripcion_sitio" value="#{beanQuestions.evaluacionNueva.descripcionSitio}" immediate="true"/>
                         <p:commandButton id="boton_descripcion_sitio" value="Aceptar" action="#{beanQuestions.accionBotonCrearNuevaEvaluacionAceptar}" update=":formulacion_evaluaciones_form:tabla" ajax="false"/>
                     </h:panelGrid>  

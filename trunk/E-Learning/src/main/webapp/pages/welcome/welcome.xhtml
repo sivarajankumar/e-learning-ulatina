@@ -11,10 +11,11 @@
         <f:view>
             <h:form id="menu_form">
                 <p:menubar>
+                    <p:menuitem value="Inicio" action="#{beanQuestions.irBienvenida}" ajax="false" icon="ui-icon-home" />  
                     <p:submenu label="Opciones" icon="ui-icon-document">
                         <p:menuitem value="Evaluar" action="#{beanQuestions.evaluarNav}" ajax="false" icon="ui-icon-pencil" />  
                         <p:separator />
-                        <p:menuitem value="Estadísticas" action="#{beanQuestions.estadisticasNav}" ajax="false" icon="ui-icon-gear" />  
+                        <p:menuitem value="Estadisticas" action="#{beanQuestions.estadisticasNav}" ajax="false" icon="ui-icon-gear" />  
                     </p:submenu>
                 </p:menubar>
             </h:form>
@@ -23,8 +24,10 @@
     <ui:define name="content">
         <f:view>
             <h:form id="welcome_form">
-                <h:outputLabel value="Welcome to the Evaluation E-Learning Platform"
-                               style="font-size: 70px; font-weight: bold"/>
+                <center>
+                    <h:outputLabel value="Welcome to the Evaluation E-Learning Platform"
+                                   style="font-size: 40px; font-weight: bold"/>
+                </center>
             </h:form>
         </f:view>
     </ui:define>

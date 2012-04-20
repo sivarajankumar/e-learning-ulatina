@@ -10,11 +10,12 @@
     <ui:define name="menu">
         <f:view>
             <h:form id="menu_form">
-                <p:menubar>  
+                <p:menubar>
+                    <p:menuitem value="Inicio" action="#{beanQuestions.irBienvenida}" ajax="false" icon="ui-icon-home" />  
                     <p:submenu label="Opciones" icon="ui-icon-document">
                         <p:menuitem value="Evaluar" action="#{beanQuestions.evaluarNav}" ajax="false" icon="ui-icon-pencil" />  
                         <p:separator />  
-                        <p:menuitem value="Estadísticas" action="#{beanQuestions.estadisticasNav}" ajax="false" icon="ui-icon-gear" />  
+                        <p:menuitem value="Estadisticas" action="#{beanQuestions.estadisticasNav}" ajax="false" icon="ui-icon-gear" />  
                     </p:submenu>
                 </p:menubar>
             </h:form>
@@ -29,9 +30,9 @@
                         <h3>Menú Gráficos</h3>
                         <p:menu type="sliding" style="width:200px; height: 130px;">
                             <p:menuitem value="Promedio" actionListener="#{beanQuestions.accionMenuGraficoPromedio}" ajax="false" update="messages,show_grafic" icon="ui-icon-refresh" />
-                            <p:submenu label="Promedio Área">
-                                <p:menuitem value="Promedio Área" actionListener="#{beanQuestions.accionMenuGraficoPromedioArea}" ajax="false" update="messages,show_grafic" icon="ui-icon-refresh"/>
-                                <p:menuitem value="Promedio Área Total" actionListener="#{beanQuestions.accionMenuGraficoPromedioAreaTotal}" ajax="false" update="messages,show_grafic" icon="ui-icon-refresh"/>
+                            <p:submenu label="Promedio Area">
+                                <p:menuitem value="Promedio Area" actionListener="#{beanQuestions.accionMenuGraficoPromedioArea}" ajax="false" update="messages,show_grafic" icon="ui-icon-refresh"/>
+                                <p:menuitem value="Promedio Area Total" actionListener="#{beanQuestions.accionMenuGraficoPromedioAreaTotal}" ajax="false" update="messages,show_grafic" icon="ui-icon-refresh"/>
                             </p:submenu>
                         </p:menu>
                     </p:panel>
