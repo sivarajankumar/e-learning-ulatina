@@ -9,7 +9,7 @@
     <h:head>
         <title>#{titulo}</title>
         <meta http-equiv="Content-type" content="application/xhtml+xml; charset=UTF-8" />
-        <link href="resources/css/basico.css" rel="stylesheet" type="text/css" />
+        <link href="#{request.contextPath}/resources/css/basico.css" rel="stylesheet" type="text/css" />
         <script type="text/javascript">
             if (window.history) {
                 function noBack(){
@@ -44,7 +44,7 @@
             style="width: 1003px;">
         <center>
             <div id="encabezado">
-                <img src="resources/pics/baner.jpg" alt="Banner"/>
+                <img src="#{request.contextPath}/resources/pics/baner.jpg" alt="Banner"/>
             </div>
         <div id="workArea" align="left">
             <ui:insert name="menu"/>
