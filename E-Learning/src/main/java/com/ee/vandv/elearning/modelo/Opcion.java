@@ -20,9 +20,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Opcion.findAll", query = "SELECT o FROM Opcion o"),
-    @NamedQuery(name = "Opcion.findByIdopcion", query = "SELECT o FROM Opcion o WHERE o.idopcion = :idopcion"),
-    @NamedQuery(name = "Opcion.findByDescripcion", query = "SELECT o FROM Opcion o WHERE o.descripcion = :descripcion"),
-    @NamedQuery(name = "Opcion.findByPuntaje", query = "SELECT o FROM Opcion o WHERE o.puntaje = :puntaje")})
+    @NamedQuery(name = "Opcion.findByIdopcion", query = "SELECT o FROM Opcion o WHERE o.idopcion = ?"),
+    @NamedQuery(name = "Opcion.findByDescripcion", query = "SELECT o FROM Opcion o WHERE o.descripcion = ?"),
+    @NamedQuery(name = "Opcion.findByPuntaje", query = "SELECT o FROM Opcion o WHERE o.puntaje = ?"),
+    @NamedQuery(name = "Opcion.findByIdPregunta",query = "SELECT o FROM Opcion o WHERE o.idpregunta.idpregunta = ?")})
 public class Opcion extends ObjetoBase implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -39,7 +40,7 @@ public class Opcion extends ObjetoBase implements Serializable {
     @Column(name = "puntaje", precision = 22)
     private Double puntaje;
     @JoinColumn(name = "idpregunta", referencedColumnName = "idpregunta")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Pregunta idpregunta;
 
     public Opcion() {

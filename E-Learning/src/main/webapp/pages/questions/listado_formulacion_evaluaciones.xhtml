@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/base.xhtml">
+    <ui:param name="titulo" value="E-Learning"/>
+    <ui:define name="menu">
+        <f:view>
+            <h:form id="menu_form">
+                <p:menubar>  
+                    <p:submenu label="Opciones" icon="ui-icon-document">
+                        <p:menuitem value="Evaluar" action="#{beanQuestions.irResponderPreguntas}" ajax="false" icon="ui-icon-pencil"/>  
+                        <p:separator />  
+                        <p:menuitem value="Estadisticas" icon="ui-icon-gear"/>  
+                    </p:submenu>
+                </p:menubar>
+            </h:form>
+        </f:view>
+    </ui:define>
+    <ui:define name="content">
+        <f:view>
+            <ui:include src="popup/nueva_evaluacion.xhtml" />
+            <h:form id="formulacion_evaluaciones_form">
+                <p:panel id="tabla">                    
+                    <p:dataTable id="evaluaciones" var="evaluacion" value="#{beanQuestions.listaEvaluaciones}" selection="#{beanQuestions.evaluacionSeleccionada}" selectionMode="single">
+                        <f:facet name="header">
+                            Listado de Evaluaciones
+                        </f:facet>
+                        <p:column headerText="ID">
+                            #{evaluacion.idevaluacion}
+                        </p:column>
+                        <p:column headerText="Descripción Sitio">
+                            #{evaluacion.descripcionSitio}
+                        </p:column>
+                        <p:column headerText="Estado">
+                            #{evaluacion.estado}
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton value="Nuevo" update=":formulacion_evaluaciones_form:display" oncomplete="evalDialog.show()" style="margin: 10px 0 10px 0" icon="ui-icon-document"/>
+                            <p:commandButton id="viewButton" value="Mostrar" icon="ui-icon-search"/>                            
+                        </f:facet>
+                    </p:dataTable>
+                </p:panel>
+                <p:dialog id="dialog" header="Nueva Evaluación" widgetVar="evalDialog" resizable="false"  
+                          width="290" showEffect="clip" hideEffect="fold">  
+
+                    <h:panelGrid id="display" columns="1" cellpadding="4">
+                        <h:outputText value="Descripción del Sitio a Evaluar" />
+                        <p:inputTextarea value="#{beanQuestions.evaluacionNueva.descripcionSitio}"/>
+
+                        <p:commandButton value="Aceptar" actionListener="#{beanQuestions.accionBotonCrearNuevaEvaluacionAceptar}" ajax="false"/>
+                    </h:panelGrid>  
+                </p:dialog>                
+            </h:form>
+        </f:view>
+    </ui:define>
+</ui:composition>

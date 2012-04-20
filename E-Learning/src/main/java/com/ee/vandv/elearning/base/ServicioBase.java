@@ -46,5 +46,12 @@ public class ServicioBase implements Serializable{
         return (ArrayList<T>) query.getResultList();
     }
     
+    public <T> ArrayList<T> seleccionar(String namedQuery,Object...parametros){
+        Query query = em.createNamedQuery(namedQuery);
+        for (int i = 0; i < parametros.length; i++) {
+                query.setParameter(i + 1, parametros[i]);
+            }
+        return (ArrayList<T>) query.getResultList();
+    }
 }
 
